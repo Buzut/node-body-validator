@@ -82,7 +82,7 @@ class RequestValidator {
      */
     validate(req, paramsList) {
         return this._validateReqHeaders(req)
-        .then(this._parseReqData)
+        .then(this._parseReqData.bind(this))
         .then((post) => {
             const wrongTypeErr = (paramName, paramType) => Promise.reject(new BadRequestError(`${paramName} param must be a ${paramType}`));
             const validatorFnErr = msg => Promise.reject(new BadRequestError(msg));
