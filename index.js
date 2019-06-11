@@ -123,7 +123,13 @@ class RequestValidator {
                     }
                 }
 
-                else paramName = param;
+                else {
+                    if (param !== 'string' && param !== 'object' && param !== 'array' && param !== 'number' && param !== 'integer' && param !== 'boolean') {
+                        throw new TypeError(`Type "${paramType}" is not supported. Type must be one of: string, object, array, number, integer, boolean`);
+                    }
+
+                    paramName = param;
+                }
 
                 // validate presence
                 if (!post[paramName] && paramType !== 'boolean' && !paramOptional) return Promise.reject(new BadRequestError(`Missing ${paramName} param`));
