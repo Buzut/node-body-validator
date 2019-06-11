@@ -4,14 +4,14 @@ const v8n = require('v8n');
 
 class RequestValidator {
     constructor(contentType, maxBodySize = 1e6) { // 1e6 ± 1MB
-        this.maxBodySize = maxBodySize;
+        this._maxBodySize = maxBodySize;
 
         if (contentType === 'application/x-www-form-urlencoded' || contentType === 'form') {
-            this.contentType = 'application/x-www-form-urlencoded';
+            this._contentType = 'application/x-www-form-urlencoded';
         }
 
         else if (contentType === 'application/json' || contentType === 'json') {
-            this.contentType = 'application/json';
+            this._contentType = 'application/json';
         }
 
         else throw new TypeError('contentType must be one of "application/x-www-form-urlencoded" or "form, or "application/json" or "json"');
@@ -25,8 +25,8 @@ class RequestValidator {
     _validateReqHeaders(req) {
         const { headers } = req;
 
-        if (!headers || !headers['content-type'] || headers['content-type'] !== this.contentType) {
-            return Promise.reject(new BadRequestError(`Content-type must be "${this.contentType}"`));
+        if (!headers || !headers['content-type'] || headers['content-type'] !== this._contentType) {
+            return Promise.reject(new BadRequestError(`Content-type must be "${this._contentType}"`));
         }
 
         return Promise.resolve(req);
@@ -38,7 +38,7 @@ class RequestValidator {
      * @return { Null | BadRequestError } null if everything's fine, Err otherwise
      */
     _validateReqLength(body) {
-        if (body.length > this.maxBodySize) return new BadRequestError(`POST content can’t exceed ${this.maxBodySize} bytes`, 413);
+        if (body.length > this._maxBodySize) return new BadRequestError(`POST content can’t exceed ${this._maxBodySize} bytes`, 413);
         return null;
     }
 
@@ -59,7 +59,7 @@ class RequestValidator {
             });
 
             req.on('end', () => {
-                if (this.contentType === 'application/x-www-form-urlencoded') return resolve(qs.parse(body));
+                if (this._contentType === 'application/x-www-form-urlencoded') return resolve(qs.parse(body));
 
                 try {
                     return resolve(JSON.parse(body));
