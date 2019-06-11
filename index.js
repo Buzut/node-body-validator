@@ -133,7 +133,7 @@ class RequestValidator {
 
                 // validate presence
                 if (!post[paramName] && paramType !== 'boolean' && !paramOptional) return Promise.reject(new BadRequestError(`Missing ${paramName} param`));
-                if (!post[paramName] && paramType === 'boolean' && typeof post[paramName] !== 'boolean') return Promise.reject(new BadRequestError(`Missing ${paramName} param`));
+                if (!post[paramName] && paramType === 'boolean' && typeof post[paramName] !== 'boolean' && !paramOptional) return Promise.reject(new BadRequestError(`Missing ${paramName} param`));
                 if (!post[paramName] && paramOptional) continue; // eslint-disable-line
 
                 // coerce if necessary
