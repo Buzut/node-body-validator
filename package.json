@@ -1,6 +1,6 @@
 {
   "name": "node-body-validator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Powerful promise based validator module to efficiently validate node body params",
   "main": "index.js",
   "scripts": {
