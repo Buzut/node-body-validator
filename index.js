@@ -51,6 +51,8 @@ class RequestValidator {
         let body = '';
 
         return new Promise((resolve, reject) => {
+            req.on('error', err => reject(new Error(err)));
+
             req.on('data', (data) => {
                 body += data;
 
